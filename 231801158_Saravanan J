@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Form</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .error {
+            color: red;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Signup Form</h2>
+        <form id="signupForm">
+            <div class="form-group">
+                <label for="firstName">First Name:</label>
+                <input type="text" class="form-control" id="firstName" name="firstName">
+                <div id="firstNameError" class="error"></div>
+            </div>
+            <div class="form-group">
+                <label for="lastName">Last Name:</label>
+                <input type="text" class="form-control" id="lastName" name="lastName">
+                <div id="lastNameError" class="error"></div>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" id="email" name="email">
+                <div id="emailError" class="error"></div>
+            </div>
+            <div class="form-group">
+                <label for="dob">Date of Birth:</label>
+                <input type="date" class="form-control" id="dob" name="dob">
+                <div id="dobError" class="error"></div>
+            </div>
+            <div class="form-group">
+                <label for="age">Age:</label>
+                <input type="number" class="form-control" id="age" name="age">
+                <div id="ageError" class="error"></div>
+            </div>
+            <div class="form-group">
+                <label>Gender:</label><br>
+                <input type="radio" id="male" name="gender" value="Male">
+                <label for="male">Male</label>
+                <input type="radio" id="female" name="gender" value="Female">
+                <label for="female">Female</label>
+                <div id="genderError" class="error"></div>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number:</label>
+                <input type="text" class="form-control" id="phone" name="phone">
+                <div id="phoneError" class="error"></div>
+            </div>
+            <div class="form-group">
+                <label for="address">Address:</label>
+                <textarea class="form-control" id="address" name="address"></textarea>
+                <div id="addressError" class="error"></div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Signup</button>
+        </form>
+        <div id="result" class="mt-3"></div>
+    </div>
+
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            let isValid = true;
+
+            // Clear previous error messages
+            document.querySelectorAll('.error').forEach(function(elem) {
+                elem.textContent = '';
+            });
+
+            // Validation rules
+            const firstName = document.getElementById('firstName').value;
+            if (!/^[A-Za-z]{4,}$/.test(firstName)) {
+                document.getElementById('firstNameError').textContent = 'First Name should contain alphabets and be at least 4 characters long.';
+                isValid = false;
+            }
+
+            const lastName = document.getElementById('lastName').value;
+            if (!/^[A-Za-z]{1,}$/.test(lastName)) {
+                document.getElementById('lastNameError').textContent = 'Last Name should contain alphabets and be at least 1 character long.';
+                isValid = false;
+            }
+
+            const email = document.getElementById('email').value;
+            if (!/^\S+@\S+\.\S+$/.test(email)) {
+                document.getElementById('emailError').textContent = 'Please enter a valid email address.';
+                isValid = false;
+            }
+
+            const dob = document.getElementById('dob').value;
+            if (dob === '') {
+                document.getElementById('dobError').textContent = 'Please select a valid date of birth.';
+                isValid = false;
+            }
+
+            const age = document.getElementById('age').value;
+            if (!/^\d{2}$/.test(age)) {
+                document.getElementById('ageError').textContent = 'Age should be a 2-digit number.';
+                isValid = false;
+            }
+
+            const gender = document.querySelector('input[name="gender"]:checked');
+            if (!gender) {
+                document.getElementById('genderError').textContent = 'Please select your gender.';
+                isValid = false;
+            }
+
+            const phone = document.getElementById('phone').value;
+            if (!/^\d{10}$/.test(phone)) {
+                document.getElementById('phoneError').textContent = 'Phone number should contain exactly 10 digits.';
+                isValid = false;
+            }
+
+            const address = document.getElementById('address').value;
+            if (address === '') {
+                document.getElementById('addressError').textContent = 'Address should not be empty.';
+                isValid = false;
+            }
+
+            // If valid, display the result in table format
+            if (isValid) {
+                const result = `
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Field</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>First Name</td>
+                                <td>${firstName}</td>
+                            </tr>
+                            <tr>
+                                <td>Last Name</td>
+                                <td>${lastName}</td>
+                            </tr>
+                            <tr>
+                                <td>Email</td>
+                                <td>${email}</td>
+                            </tr>
+                            <tr>
+                                <td>Date of Birth</td>
+                                <td>${dob}</td>
+                            </tr>
+                            <tr>
+                                <td>Age</td>
+                                <td>${age}</td>
+                            </tr>
+                            <tr>
+                                <td>Gender</td>
+                                <td>${gender.value}</td>
+                            </tr>
+                            <tr>
+                                <td>Phone Number</td>
+                                <td>${phone}</td>
+                            </tr>
+                            <tr>
+                                <td>Address</td>
+                                <td>${address}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                `;
+                document.getElementById('result').innerHTML = result;
+            }
+        });
+    </script>
+</body>
+</html>
